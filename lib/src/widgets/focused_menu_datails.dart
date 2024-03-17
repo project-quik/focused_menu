@@ -57,7 +57,13 @@ class FocusedMenuDetails extends StatelessWidget {
     final topOffset = (childOffset.dy + menuHeight + childSize!.height) <
             size.height - bottomOffsetHeight!
         ? childOffset.dy + childSize!.height + menuOffset!
-        : childOffset.dy - menuHeight - menuOffset!;
+        : null;
+    final bottomOffset = topOffset == null ? bottomOffsetHeight! : null;
+    final childTopOffset = bottomOffset == null ? childOffset.dy : null;
+    final childBottomOffset = bottomOffset == null
+        ? null
+        : bottomOffset + menuHeight + childSize!.height;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -78,6 +84,7 @@ class FocusedMenuDetails extends StatelessWidget {
                 )),
             Positioned(
               top: topOffset,
+              bottom: bottomOffset,
               left: leftOffset,
               child: TweenAnimationBuilder(
                 duration: Duration(milliseconds: 200),
@@ -161,7 +168,8 @@ class FocusedMenuDetails extends StatelessWidget {
             if (toolbarActions != null)
               ToolbarActions(toolbarActions: toolbarActions!),
             Positioned(
-                top: childOffset.dy,
+                top: childTopOffset,
+                bottom: childBottomOffset,
                 left: childOffset.dx,
                 child: AbsorbPointer(
                     absorbing: true,
