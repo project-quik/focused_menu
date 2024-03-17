@@ -81,6 +81,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   GlobalKey containerKey = GlobalKey();
   Offset childOffset = Offset(0, 0);
   Size? childSize;
+  final childId = UniqueKey();
 
   _FocusedMenuHolderState(FocusedMenuHolderController? _controller) {
     if (_controller != null) {
@@ -102,19 +103,23 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        key: containerKey,
-        onTap: () async {
-          widget.onPressed?.call();
-          if (widget.openWithTap) {
-            await openMenu(context);
-          }
-        },
-        onLongPress: () async {
-          if (!widget.openWithTap) {
-            await openMenu(context);
-          }
-        },
-        child: widget.child);
+      key: containerKey,
+      onTap: () async {
+        widget.onPressed?.call();
+        if (widget.openWithTap) {
+          await openMenu(context);
+        }
+      },
+      onLongPress: () async {
+        if (!widget.openWithTap) {
+          await openMenu(context);
+        }
+      },
+      child: Hero(
+        child: widget.child,
+        tag: childId.toString(),
+      ),
+    );
   }
 
   Future openMenu(BuildContext context) async {
@@ -133,6 +138,7 @@ class _FocusedMenuHolderState extends State<FocusedMenuHolder> {
               itemExtent: widget.menuItemExtent,
               menuBoxDecoration: widget.menuBoxDecoration,
               child: widget.child,
+              childId: childId.toString(),
               childOffset: childOffset,
               childSize: childSize,
               menuItems: widget.menuItems,

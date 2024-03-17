@@ -16,6 +16,7 @@ class FocusedMenuDetails extends StatelessWidget {
   final double? itemExtent;
   final Size? childSize;
   final Widget child;
+  final String childId;
   final bool animateMenu;
   final double? blurSize;
   final double? menuWidth;
@@ -34,6 +35,7 @@ class FocusedMenuDetails extends StatelessWidget {
       {Key? key,
       required this.menuItems,
       required this.child,
+      required this.childId,
       required this.childOffset,
       required this.childSize,
       required this.menuBoxDecoration,
@@ -185,7 +187,10 @@ class FocusedMenuDetails extends StatelessWidget {
                     child: Container(
                         width: childSize!.width,
                         height: childSize!.height,
-                        child: child))),
+                        child: Hero(
+                          child: child,
+                          tag: childId,
+                        )))),
           ],
         ),
       ),
