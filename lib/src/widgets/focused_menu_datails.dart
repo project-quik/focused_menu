@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/src/models/focused_menu_item.dart';
 import 'package:focused_menu/src/widgets/toolbar_actions.dart';
 
+enum MenuAlignment {
+  left,
+  right,
+}
+
 class FocusedMenuDetails extends StatelessWidget {
   final List<FocusedMenuItem> menuItems;
   final BoxDecoration? menuBoxDecoration;
@@ -14,6 +19,7 @@ class FocusedMenuDetails extends StatelessWidget {
   final bool animateMenu;
   final double? blurSize;
   final double? menuWidth;
+  final MenuAlignment? menuAlignment;
   final Color? blurBackgroundColor;
   final double? bottomOffsetHeight;
   final double? menuOffset;
@@ -36,6 +42,7 @@ class FocusedMenuDetails extends StatelessWidget {
       required this.blurSize,
       required this.blurBackgroundColor,
       required this.menuWidth,
+      required this.menuAlignment,
       required this.enableMenuScroll,
       this.bottomOffsetHeight,
       this.menuOffset,
@@ -51,7 +58,8 @@ class FocusedMenuDetails extends StatelessWidget {
 
     final maxMenuWidth = menuWidth ?? (size.width * 0.70);
     final menuHeight = listHeight < maxMenuHeight ? listHeight : maxMenuHeight;
-    final leftOffset = (childOffset.dx + maxMenuWidth) < size.width
+    final leftOffset = (childOffset.dx + maxMenuWidth) < size.width &&
+            menuAlignment == MenuAlignment.left
         ? childOffset.dx
         : (childOffset.dx - maxMenuWidth + childSize!.width);
     final topOffset = (childOffset.dy + menuHeight + childSize!.height) <
